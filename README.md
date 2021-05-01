@@ -10,3 +10,5 @@ This is a Convex Hull created using Graham Scan in Python 3 using _recursion_.<b
 1) Calculate the perimeter
 2) Visual representation of the points and the hull
 3) Attempt to calculate the area enclosed
+## Updates
+1) Created a visual representation using matplotlib instead of pygame that also has the convex points on the plot
