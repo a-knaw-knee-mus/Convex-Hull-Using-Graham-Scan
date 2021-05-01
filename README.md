@@ -7,6 +7,7 @@ This is a Convex Hull created using Graham Scan in Python 3 using _recursion_.<b
 -This has the potential of adding unwanted points to the hull which is why recursion is used. This new array is then sent back into the function if a right turn is detected, indicating an unwanted point in the hull.<br>
 -The recursion will continue to loop, sending the array back into the function until no right turn is detected. The convex hull is now complete.
 ## Upcoming Improvements
-1) Calculate the perimeter
-2) Show the points in pygame as well as the perimeter that is created
-3) Attempt to calculate the area enclosed
+1) Automatically remove identical points as this can cause errors in the creation of the hull
+2) Calculate the perimeter
+3) Show the points in pygame as well as the perimeter that is created
+4) Attempt to calculate the area enclosed
