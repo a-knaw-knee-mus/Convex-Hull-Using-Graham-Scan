@@ -8,5 +8,5 @@ This is a Convex Hull created using Graham Scan in Python 3 using _recursion_.<b
 -The recursion will continue to loop, sending the array back into the function until no right turn is detected. The convex hull is now complete.
 ## Upcoming Improvements
 1) Calculate the perimeter
-2) ~~Visual representation of the points and the hull~~ (completed)
+2) ~~Visual representation of the points and the hull~~ (completed using matplotlib-pyplot)
 3) Attempt to calculate the area enclosed
