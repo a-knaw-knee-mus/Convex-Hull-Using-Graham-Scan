@@ -9,5 +9,5 @@ This is a Convex Hull created using Graham Scan in Python 3 using _recursion_.<b
 ## Upcoming Improvements
 1) Automatically remove identical points as this can cause errors in the creation of the hull
 2) Calculate the perimeter
-3) Show the points in pygame as well as the perimeter that is created
+3) Show the points in pygame
 4) Attempt to calculate the area enclosed
