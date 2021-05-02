@@ -54,7 +54,7 @@ def create_hull(array):
 
         turn = (point2[0] - point1[0]) * (point3[1] - point1[1]) - (point2[1] - point1[1]) * (point3[0] - point1[0])
         if turn < 0:  # right turn
-            return create_hull(hull)  # send the array with the unwanted points back into the function
+            return create_hull(hull)  # send the array with the unwanted points back into the function to weed them out
         j += 1
     return hull
 
@@ -73,19 +73,33 @@ def find_perimeter(array):
     return prmtr
 
 
-def plot(input_list, convex_hull, perm):
+def find_area(array):
+    array.append(array[0])
+    i = 1
+    det = 0
+    for point in array:
+        if i == len(array):
+            break
+        det += array[i][1]*point[0] - point[1]*array[i][0]  # area calculation using shoelace formula
+        i += 1
+    return 0.5*det
+
+
+def plot(input_list, convex_hull, perm, total_area):
     font = {'family': 'sans-serif',
             'size': 8}
 
+    # plot all the points
     x = []
     y = []
-    x.append(convex_hull[0][0])  # plots the starting point which isn't part of input_list
+    x.append(convex_hull[0][0])
     y.append(convex_hull[0][1])
-    for points in input_list:  # plot all the points
+    for points in input_list:
         x.append(points[0])
         y.append(points[1])
     plt.plot(x, y, 'ok')
 
+    # create the outer perimeter
     i = 1
     x_hull = []
     y_hull = []
@@ -99,13 +113,13 @@ def plot(input_list, convex_hull, perm):
             x_hull.append(convex_hull[i][0])
             y_hull.append(convex_hull[i][1])
         plt.plot(x_hull, y_hull, 'b')
-        for i_x, i_y in zip(x_hull, y_hull):  # display the coordinates of the points in the hull
+        for i_x, i_y in zip(x_hull, y_hull):  # display the coordinates of the perimeter points
             plt.text(i_x, i_y, '({}, {})'.format(i_x, i_y), font)
         x_hull.clear()
         y_hull.clear()
         i += 1
 
-    plt.title('Convex Hull with a Perimeter of %.2f units' % perm)
+    plt.title('Convex Hull\n Perimeter of %.2f units\n Area of %.1f units^2' % (perm, total_area))
     plt.show()
 
 
@@ -120,5 +134,7 @@ sortedList = sort(inputList)  # the list is now sorted in terms of CCW angle wit
 convexHull = create_hull(sortedList)
 print("THE POINTS THAT MAKE THE CONVEX HULL:\n" + str(convexHull))
 perimeter = find_perimeter(convexHull)
-print("\nThe perimeter is: %.2f" % perimeter)
-plot(inputList, convexHull, perimeter)  # visually plot the points
+print("\nThe perimeter in units is: %.2f" % perimeter)
+area = find_area(convexHull)
+print("The area in units^2 is:    %.1f" % area)
+plot(sortedList, convexHull, perimeter, area)  # visually plot the points
