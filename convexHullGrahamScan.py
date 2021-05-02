@@ -34,7 +34,7 @@ def create_hull(array):
     for point in array:
         point1 = point
         point2 = array[i]
-        point3 = array[i+1]
+        point3 = array[i + 1]
 
         turn = (point2[0] - point1[0]) * (point3[1] - point1[1]) - (point2[1] - point1[1]) * (point3[0] - point1[0])
         if turn >= 0:  # left turn
@@ -50,7 +50,7 @@ def create_hull(array):
             break
         point1 = point
         point2 = hull[j]
-        point3 = hull[j+1]
+        point3 = hull[j + 1]
 
         turn = (point2[0] - point1[0]) * (point3[1] - point1[1]) - (point2[1] - point1[1]) * (point3[0] - point1[0])
         if turn < 0:  # right turn
@@ -59,10 +59,43 @@ def create_hull(array):
     return hull
 
 
+def plot(input_list, convex_hull):
+    font = {'family': 'sans-serif',
+            'size': 8}
+
+    x = []
+    y = []
+    for points in input_list:  # plot all the points
+        x.append(points[0])
+        y.append(points[1])
+    plt.plot(x, y, 'ok')
+
+    n = 1
+    x_hull = []
+    y_hull = []
+    for points in convex_hull:
+        x_hull.append(points[0])
+        y_hull.append(points[1])
+        if n == len(convex_hull):
+            x_hull.append(convex_hull[0][0])
+            y_hull.append(convex_hull[0][1])
+        else:
+            x_hull.append(convex_hull[n][0])
+            y_hull.append(convex_hull[n][1])
+        plt.plot(x_hull, y_hull, 'b')
+        for i_x, i_y in zip(x_hull, y_hull):  # display the coordinates of the points in the hull
+            plt.text(i_x, i_y, '({}, {})'.format(i_x, i_y), font)
+        x_hull.clear()
+        y_hull.clear()
+        n += 1
+
+    plt.title('Convex Hull')
+    plt.show()
+
+
 file = open("data.txt", "r")
 f = file.readlines()
 inputList = []
-
 for line in f:
     row = list(map(int, line.split()))
     inputList.append(row)
@@ -70,35 +103,4 @@ for line in f:
 sortedList = sort(inputList)  # the list is now sorted in terms of CCW angle with reference point
 convexHull = create_hull(sortedList)
 print("THE POINTS THAT MAKE THE CONVEX HULL:\n" + str(convexHull))
-
-font = {'family': 'sans-serif',
-        'size': 8}
-
-x = []
-y = []
-for points in inputList:  # plot all the points
-    x.append(points[0])
-    y.append(points[1])
-plt.plot(x, y, 'ok')
-
-n = 1
-x_hull = []
-y_hull = []
-for points in convexHull:
-    x_hull.append(points[0])
-    y_hull.append(points[1])
-    if n == len(convexHull):
-        x_hull.append(convexHull[0][0])
-        y_hull.append(convexHull[0][1])
-    else:
-        x_hull.append(convexHull[n][0])
-        y_hull.append(convexHull[n][1])
-    plt.plot(x_hull, y_hull, 'b')
-    for i_x, i_y in zip(x_hull, y_hull):
-        plt.text(i_x, i_y, '({}, {})'.format(i_x, i_y), font)
-    x_hull.clear()
-    y_hull.clear()
-    n += 1
-
-plt.title('Convex Hull')
-plt.show()
+plot(inputList, convexHull)  # visually plot the points
