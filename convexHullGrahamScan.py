@@ -1,4 +1,4 @@
-from math import atan2
+import math
 import matplotlib.pyplot as plt
 
 
@@ -12,15 +12,15 @@ def sort(array):
             if point[0] < start_point[0]:
                 start_point = point
 
-    count = 0
+    i = 0
     for point in array:  # remove the smallest point from list
         if point == start_point:
-            array.pop(count)
-        count += 1
+            array.pop(i)
+        i += 1
 
     angle = []
     for point in array:
-        angle.append(atan2(point[1] - start_point[1], point[0] - start_point[0]))
+        angle.append(math.atan2(point[1] - start_point[1], point[0] - start_point[0]))
 
     sorted_list = [z for _, z in sorted(zip(angle, array))]  # sort the list in terms of its angle
     sorted_list.insert(0, start_point)
@@ -54,42 +54,58 @@ def create_hull(array):
 
         turn = (point2[0] - point1[0]) * (point3[1] - point1[1]) - (point2[1] - point1[1]) * (point3[0] - point1[0])
         if turn < 0:  # right turn
-            return create_hull(hull)  # send the array with the unwanted points back into the function to weed them out
+            return create_hull(hull)  # send the array with the unwanted points back into the function
         j += 1
     return hull
 
 
-def plot(input_list, convex_hull):
+def find_perimeter(array):
+    i = 1
+    prmtr = 0
+    for point in array:
+        point1 = point
+        if i == len(array):
+            point2 = array[0]
+        else:
+            point2 = array[i]
+        prmtr += math.sqrt((point2[0]-point1[0])**2 + (point2[1]-point1[1])**2)
+        i += 1
+    return prmtr
+
+
+def plot(input_list, convex_hull, perm):
     font = {'family': 'sans-serif',
             'size': 8}
 
     x = []
     y = []
+    x.append(convex_hull[0][0])  # plots the starting point which isn't part of input_list
+    y.append(convex_hull[0][1])
     for points in input_list:  # plot all the points
         x.append(points[0])
         y.append(points[1])
     plt.plot(x, y, 'ok')
 
-    n = 1
+    i = 1
     x_hull = []
     y_hull = []
     for points in convex_hull:
         x_hull.append(points[0])
         y_hull.append(points[1])
-        if n == len(convex_hull):
+        if i == len(convex_hull):
             x_hull.append(convex_hull[0][0])
             y_hull.append(convex_hull[0][1])
         else:
-            x_hull.append(convex_hull[n][0])
-            y_hull.append(convex_hull[n][1])
+            x_hull.append(convex_hull[i][0])
+            y_hull.append(convex_hull[i][1])
         plt.plot(x_hull, y_hull, 'b')
         for i_x, i_y in zip(x_hull, y_hull):  # display the coordinates of the points in the hull
             plt.text(i_x, i_y, '({}, {})'.format(i_x, i_y), font)
         x_hull.clear()
         y_hull.clear()
-        n += 1
+        i += 1
 
-    plt.title('Convex Hull')
+    plt.title('Convex Hull with a Perimeter of %.2f units' % perm)
     plt.show()
 
 
@@ -103,4 +119,6 @@ for line in f:
 sortedList = sort(inputList)  # the list is now sorted in terms of CCW angle with reference point
 convexHull = create_hull(sortedList)
 print("THE POINTS THAT MAKE THE CONVEX HULL:\n" + str(convexHull))
-plot(inputList, convexHull)  # visually plot the points
+perimeter = find_perimeter(convexHull)
+print("\nThe perimeter is: %.2f" % perimeter)
+plot(inputList, convexHull, perimeter)  # visually plot the points
