@@ -1,8 +1,9 @@
 import math
 import matplotlib.pyplot as plt
+import time
 
 
-def sort(array):
+def sort(array):  # sort in terms of CCW angle with start point
     start_point = array[0]
 
     for point in array:  # finds the point with the smallest y-val, if 2 point share it, one with smallest x is taken
@@ -74,7 +75,6 @@ def find_perimeter(array):
 
 
 def find_area(array):
-    array.append(array[0])
     i = 1
     det = 0
     for point in array:
@@ -85,15 +85,13 @@ def find_area(array):
     return 0.5*det
 
 
-def plot(input_list, convex_hull, perm, total_area):
+def plot(input_list, convex_hull, perm, total_area):  # visually plot the points
     font = {'family': 'sans-serif',
             'size': 8}
 
     # plot all the points
     x = []
     y = []
-    x.append(convex_hull[0][0])
-    y.append(convex_hull[0][1])
     for points in input_list:
         x.append(points[0])
         y.append(points[1])
@@ -123,6 +121,7 @@ def plot(input_list, convex_hull, perm, total_area):
     plt.show()
 
 
+start_time = time.time()
 file = open("data.txt", "r")
 f = file.readlines()
 inputList = []
@@ -130,11 +129,13 @@ for line in f:
     row = list(map(int, line.split()))
     inputList.append(row)
 
-sortedList = sort(inputList)  # the list is now sorted in terms of CCW angle with reference point
-convexHull = create_hull(sortedList)
-print("THE POINTS THAT MAKE THE CONVEX HULL:\n" + str(convexHull))
+sortedList = sort(inputList.copy())
+convexHull = create_hull(sortedList.copy())
 perimeter = find_perimeter(convexHull)
-print("\nThe perimeter in units is: %.2f" % perimeter)
 area = find_area(convexHull)
+
+print("THE POINTS THAT MAKE THE CONVEX HULL:\n" + str(convexHull))
+print("\nThe perimeter in units is: %.2f" % perimeter)
 print("The area in units^2 is:    %.1f" % area)
-plot(sortedList, convexHull, perimeter, area)  # visually plot the points
+print("\n--- %s seconds ---" % (time.time() - start_time))
+plot(inputList, convexHull, perimeter, area)
