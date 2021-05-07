@@ -127,7 +127,8 @@ f = file.readlines()
 inputList = []
 for line in f:
     row = list(map(int, line.split()))
-    inputList.append(row)
+    if row not in inputList:
+        inputList.append(row)
 
 sortedList = sort(inputList.copy())
 convexHull = create_hull(sortedList.copy())
