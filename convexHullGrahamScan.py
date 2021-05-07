@@ -47,7 +47,7 @@ def create_hull(array):
 
     j = 1
     for point in hull:
-        if j == len(hull) - 2:
+        if j == len(hull) - 1:
             break
         point1 = point
         point2 = hull[j]
