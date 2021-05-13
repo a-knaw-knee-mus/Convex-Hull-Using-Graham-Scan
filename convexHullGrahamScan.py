@@ -118,6 +118,7 @@ def plot(input_list, convex_hull, perm, total_area):  # visually plot the points
         i += 1
 
     plt.title('Convex Hull\n Perimeter of %.2f units\n Area of %.1f units^2' % (perm, total_area))
+    plt.savefig("plot.png", bbox_inches='tight', dpi=100)
     plt.show()
 
 
